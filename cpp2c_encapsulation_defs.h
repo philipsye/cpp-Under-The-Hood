@@ -1,5 +1,8 @@
 #include <stdbool.h>
 
+
+//// Box ////////////
+
 typedef struct {
     double length;
     double width;
@@ -9,13 +12,27 @@ typedef struct {
 void _Z3BoxCE(Box* this);
 void _Z3BoxCEd(Box* this ,double dim);
 void _Z3BoxCEddd(Box* this ,double l, double w, double h);
-void _Z3Box7PrintEv(const Box* this);
-double _Z3Box8GetWidth(Box* this);
-double _Z3Box9GetLength(Box* this);
-double _Z3Box9GetHeight(Box* this);
-double _Z3Box9GetVolume(Box* this);
+void _Z3BoxDEv(Box* this);
+void _ZC3BoxEsbox(Box* this , Box* box);
+Box* _Z3Box14AssignOperatorEsbox(Box* this , Box* box);
 Box* _Z3Box18multAssignOperator(Box* this,double mult);
-Box multOperatorCboxd(const Box* box, double mult);
-Box multOperatordCbox(double mult, const Box* box);
-bool EqualEqualOperatorCboxCbox(const Box* lhs, const Box* rhs);
-bool notEqualOperatorCboxCbox(const Box* lhs, const Box* rhs);
+void _Z3Box7PrintEv(const Box* this);
+
+
+//Box multOperatorKboxd(const Box* box, double mult);
+//Box multOperatordKbox(double mult, const Box* box);
+
+//// Shelf ////////////
+
+extern const char* _Z5Shelf7message;
+
+typedef struct {
+    Box _Z5Shelf5boxes[3];
+}Shelf;
+
+void _Z5ShelfCE(Shelf* this);
+void _Z5ShelfDE(Shelf* this);
+void _Z5Shelf6SetBoxEsiBox(Shelf* this , int index, const Box* dims);
+double _Z5Shelf9getVolumeECs(const Shelf* this );
+void _Z5Shelf5printEs(const Shelf* this);
+

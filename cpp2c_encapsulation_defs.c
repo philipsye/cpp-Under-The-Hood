@@ -1,5 +1,9 @@
 #include "cpp2c_encapsulation_defs.h"
 #include <stdio.h>
+
+
+//// Box ////////////
+
 void _Z3BoxCE(Box* this){
     this->length = 1;
     this->height = 1;
@@ -23,24 +27,25 @@ void _Z3BoxCEddd(Box* this ,double l, double w, double h){
     _Z3Box7PrintEv(this);
 }
 
+
+void _ZC3BoxEsbox(Box* this , Box* box){
+    *this = *box;
+}
+
+
+Box* _Z3Box14AssignOperatorEsbox(Box* this , Box* box){
+    *this = *box;
+    return this;
+}
+
+
+void _Z3BoxDEv(Box* this){
+    printf("Box destructor, %f x %f x %f\n", this->width, this->height, this->length);
+}
+
+
 void _Z3Box7PrintEv(const Box* this){
-    printf("Box: %f x %f x %f\n", this->length, this->width, this->height);
-}
-
-/*inline*/double _Z3Box8GetWidth(Box* this){
-    return this->width;
-}
-
-
-/*inline*/double _Z3Box9GetLength(Box* this){
-    return this->length;
-}
-/*inline*/double _Z3Box9GetHeight(Box* this){
-    return this->width;
-}
-
-/*inline*/double _Z3Box9GetVolume(Box* this){
-    return this->width * this->length * this->height;
+    printf("Box: %f x %f x %f\n", this->length,this->height , this->width);
 }
 
 Box* _Z3Box18multAssignOperator(Box* this,double mult){
@@ -51,20 +56,31 @@ Box* _Z3Box18multAssignOperator(Box* this,double mult){
 }
 
 
-/*inline*/Box multOperatorCboxd(const Box* box, double mult){
-    Box ret = *box;
-    _Z3Box18multAssignOperator(&ret , mult);
-    return ret;
+//// Shelf ////////////
+
+const char* _Z5Shelf7message = "The total volume held on the shelf is";
+
+
+void _Z5ShelfCE(Shelf* this){}
+
+
+void _Z5ShelfDE(Shelf* this){}
+
+
+void _Z5Shelf6SetBoxEsiBox(Shelf* this , int index, const Box* dims)
+{
+    this->_Z5Shelf5boxes[index] = *dims;
 }
 
 
-/*inline*/Box multOperatordCbox(double mult, const Box* box){
-    return multOperatorCboxd(box , mult);
+double _Z5Shelf9getVolumeECs(const Shelf* this ){
+    double vol = 0;
+    for (size_t i = 0; i < 3; ++i)
+        vol += this->_Z5Shelf5boxes[i].width*this->_Z5Shelf5boxes[i].height*this->_Z5Shelf5boxes[i].length;
+    return vol;
 }
 
-bool EqualEqualOperatorCboxCbox(const Box* lhs, const Box* rhs){
-    return _Z3Box8GetWidth(&lhs) == _Z3Box8GetWidth(rhs) && _Z3Box9GetHeight(lhs) == _Z3Box9GetHeight(rhs) && _Z3Box9GetLength(lhs) == _Z3Box9GetLength(rhs);
-}
-bool operatorNotEqualCBCB(const Box* lhs, const Box* rhs){
-    return !(lhs == rhs);
+
+void _Z5Shelf5printEs(const Shelf* this){
+    printf("%s %f\n", _Z5Shelf7message, _Z5Shelf9getVolumeECs(this));
 }
