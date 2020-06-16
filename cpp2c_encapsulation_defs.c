@@ -1,5 +1,5 @@
 #include "cpp2c_encapsulation_defs.h"
-#include <stdio.h>
+
 
 
 //// Box ////////////
@@ -40,7 +40,7 @@ Box* _Z3Box14AssignOperatorEsbox(Box* this , Box* box){
 
 
 void _Z3BoxDEv(Box* this){
-    printf("Box destructor, %f x %f x %f\n", this->width, this->height, this->length);
+    printf("Box destructor, %f x %f x %f\n", this->height, this->width, this->length );
 }
 
 
@@ -69,7 +69,7 @@ void _Z5ShelfDE(Shelf* this){}
 
 void _Z5Shelf6SetBoxEsiBox(Shelf* this , int index, const Box* dims)
 {
-    this->_Z5Shelf5boxes[index] = *dims;
+    _Z3Box14AssignOperatorEsbox(&this->_Z5Shelf5boxes[index] , dims);
 }
 
 
