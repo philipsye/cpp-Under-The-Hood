@@ -1,17 +1,10 @@
-#ifndef UNTITLED_CPP2C_INHERITANCE_DEFS_H
-#define UNTITLED_CPP2C_INHERITANCE_DEFS_H
-
 #include "cpp2c_encapsulation_defs.h"
 
 
-//// Materials ////////////
+/*/// Materials ///////////*/
 
-typedef struct {
-    bool isEmpty;
-}Materials;
+typedef struct {}Materials;
 
-void _Z9MaterialsCEs(Materials* this);
-void _Z9MaterialsDEs(Materials* this);
 
 enum Types{
     PLASTIC,
@@ -22,18 +15,24 @@ enum Types{
 };
 
 
+void _Z9MaterialsCEs(Materials* this);
+void _Z9MaterialsCopyCEsMaterials(Materials* this, Materials* other);
+Materials* _Z9MaterialsAssignOperatorEsMaterials(Materials* this, Materials* other);
+void _Z9MaterialsDEs(Materials* this);
+
+
 typedef struct{
+    Materials mat;
     enum Types _Z10Material_t8materialVE;
 }Material_t;
 
 
-void _Z10Material_tCEs(Material_t* this , enum Types mat);
 void _Z10Material_t5CopyCEs(Material_t* this , Material_t* other );
 Material_t* _Z10Material_t14AssignOperatorEs(Material_t* this , Material_t* other );
 void _Z10Material_tDEs(Material_t* this);
 
 
-//// PhysicalBox ////////////
+/*/// PhysicalBox ///////////*/
 
 typedef struct
 {
@@ -51,7 +50,7 @@ void _Z11PhysicalBoxDEs(PhysicalBox* this);
 void _Z11PhysicalBox6printpEs(const PhysicalBox* this);
 
 
-//// WeightBox ////////////
+/*/// WeightBox ///////////*/
 
 typedef struct
 {
@@ -65,5 +64,3 @@ void _Z9WeightBox5CopyCEsWeightBox(WeightBox* this, WeightBox* other);
 WeightBox* _Z9Weight14AssignOperatorECsWeightBox(WeightBox* this, WeightBox* other);
 void _Z9WeightBoxDs(WeightBox* this);
 void _Z9WeightBox6PrintwEs(const WeightBox* this);
-
-#endif //UNTITLED_CPP2C_INHERITANCE_DEFS_H

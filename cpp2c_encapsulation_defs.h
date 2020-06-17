@@ -1,7 +1,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-//// Box ////////////
+/*/// Box ///////////*/
 
 typedef struct {
     double length;
@@ -14,15 +14,15 @@ void _Z3BoxCEd(Box* this ,double dim);
 void _Z3BoxCEddd(Box* this ,double l, double w, double h);
 void _Z3BoxDEv(Box* this);
 void _ZC3BoxEsbox(Box* this , Box* box);
-Box* _Z3Box14AssignOperatorEsbox(Box* this , Box* box);
+Box* _Z3Box14AssignOperatorEsbox( Box* this , const Box* box);
 Box* _Z3Box18multAssignOperator(Box* this,double mult);
 void _Z3Box7PrintEv(const Box* this);
 
 
-//Box multOperatorKboxd(const Box* box, double mult);
-//Box multOperatordKbox(double mult, const Box* box);
+/*Box multOperatorKboxd(const Box* box, double mult);
+Box multOperatordKbox(double mult, const Box* box);*/
 
-//// Shelf ////////////
+/*/// Shelf ///////////*/
 
 extern const char* _Z5Shelf7message;
 

@@ -2,7 +2,7 @@
 
 
 
-//// Box ////////////
+/*/// Box ///////////*/
 
 void _Z3BoxCE(Box* this){
     this->length = 1;
@@ -33,7 +33,7 @@ void _ZC3BoxEsbox(Box* this , Box* box){
 }
 
 
-Box* _Z3Box14AssignOperatorEsbox(Box* this , Box* box){
+Box* _Z3Box14AssignOperatorEsbox( Box* this , const Box* box){
     *this = *box;
     return this;
 }
@@ -56,7 +56,7 @@ Box* _Z3Box18multAssignOperator(Box* this,double mult){
 }
 
 
-//// Shelf ////////////
+/*/// Shelf ///////////*/
 
 const char* _Z5Shelf7message = "The total volume held on the shelf is";
 
@@ -75,7 +75,8 @@ void _Z5Shelf6SetBoxEsiBox(Shelf* this , int index, const Box* dims)
 
 double _Z5Shelf9getVolumeECs(const Shelf* this ){
     double vol = 0;
-    for (size_t i = 0; i < 3; ++i)
+    size_t i;
+    for (i = 0; i < 3; ++i)
         vol += this->_Z5Shelf5boxes[i].width*this->_Z5Shelf5boxes[i].height*this->_Z5Shelf5boxes[i].length;
     return vol;
 }

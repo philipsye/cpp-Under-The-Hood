@@ -2,23 +2,34 @@
 
 
 void doMaterials(){
-    printf("\n--- Start doMaterials() ---\n\n");
 
     Materials mat;
+    Material_t mat1, mat2;
+    typedef struct  { Materials mat; Material_t mat_t; char flag;}MatTest;
+    printf("\n--- Start doMaterials() ---\n\n");
+
     _Z9MaterialsCEs(&mat);
-    printf("Size of Materials: %lu\n", sizeof(Materials));
-    printf("Size of mat: %lu\n", sizeof(mat));
+    printf("Size of Materials: %lu\n", sizeof(Materials)+1);
+    printf("Size of mat: %lu\n", sizeof(mat)+1);
     printf("Size of Materials::Types: %lu\n", sizeof(enum Types));
     printf("Size of Material_t: %lu\n", sizeof(Material_t));
 
-    typedef struct  { Materials mat; Material_t mat_t; }MatTest;
+
     printf("Size of Materials + Material_t: %lu\n", sizeof(MatTest));
 
-    Material_t mat1;
-    _Z10Material_tCEs(&mat1, OTHER);
+    _Z9MaterialsCEs((Materials*)(&mat1));
+    (&mat1)->_Z10Material_t8materialVE = OTHER;
+    {
+        const char* const names[] = { "Plastic", "Metal", "Wood", "Paper", "Other" };
+        printf("Material created, set to %s\n", names[(&mat1)->_Z10Material_t8materialVE]);
+    }
 
-    Material_t mat2;
-    _Z10Material_tCEs(&mat2, METAL);
+    _Z9MaterialsCEs((Materials*)(&mat2));
+    (&mat2)->_Z10Material_t8materialVE = METAL;
+    {
+        const char* const names[] = { "Plastic", "Metal", "Wood", "Paper", "Other" };
+        printf("Material created, set to %s\n", names[(&mat2)->_Z10Material_t8materialVE]);
+    }
 
     printf("\n--- End doMaterials() ---\n\n");
 
@@ -29,15 +40,16 @@ void doMaterials(){
 
 
 void doPhysicalBox() {
+
+    PhysicalBox pb1, pb2, pb3, pb4;
     printf("\n--- Start doPhysicalBox() ---\n\n");
 
-    PhysicalBox pb1, pb2, pb3;
     _Z11PhysicalBoxCEsdddTypes(&pb1, 8, 6, 4,PLASTIC);
     _Z11PhysicalBoxCEsTypes(&pb2, WOOD);
     _Z11PhysicalBoxCEsddd(&pb3, 7, 7, 7);
 
     printf("\npb4 is copy-constructed from pb1\n");
-    PhysicalBox pb4;
+
     _Z11PhysicalBox5CopyCEsPhysicalBox(&pb4,&pb1);
 
     _Z11PhysicalBox6printpEs(&pb4);
@@ -63,16 +75,15 @@ void doPhysicalBox() {
 
 
 void doWeightBox() {
+    WeightBox pw1, pw2, pw3, pw4;
     printf("\n--- Start doWeightBox() ---\n\n");
 
-    WeightBox pw1, pw2, pw3;
     _Z9WeightBoxCEsdddd(&pw1, 8, 6, 4, 25);
     _Z9WeightBoxCEsdddd(&pw2, 1, 2, 3, 0.0);
     _Z9WeightBoxCEsdddd(&pw3, 10, 20, 30, 15);
 
     printf("\npw4 is copy-constructed from pw1\n");
 
-    WeightBox pw4;
     _Z9WeightBox5CopyCEsWeightBox(&pw4, &pw1);
     _Z9WeightBox6PrintwEs(&pw4);
     _Z9WeightBox6PrintwEs(&pw1);
@@ -99,11 +110,8 @@ int main()
     printf("\n--- Start main() ---\n\n");
 
     doMaterials();
-
     doPhysicalBox();
-
     doWeightBox();
-
 
     printf("\n--- End main() ---\n\n");
     return 0;
