@@ -5,7 +5,7 @@
 typedef void*(*TYPE)(void*);
 typedef void(*PrintLC)(const void*, long, char);
 typedef void(*pDCtor)(void*);
-typedef void(*PrintC)(void*,const char*);
+typedef void(*PrintChar)(void*,const char*);
 typedef void(*pPrintLong)(void*,long,char);
 typedef char(*GetDefaultSymbol)(void*);
 

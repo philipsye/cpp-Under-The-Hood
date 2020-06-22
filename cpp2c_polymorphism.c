@@ -1,5 +1,5 @@
 #include "cpp2c_polymorphism_defs.h"
-
+#include "stdlib.h"
 
 void doPrePostFixer()
 {
@@ -142,8 +142,7 @@ void doMultiplier()
     _Z10Multiplier8VirtualDEs(&m1);
 }
 
-void doFormatterArray()
-{
+void doFormatterArray() {
     int i;
     PrePostDollarFixer PrePostDollarFixerTemp;
     Multiplier MultiplierTemp;
@@ -153,62 +152,86 @@ void doFormatterArray()
     printf("\n--- start doFormatterArray() ---\n\n");
 
     _Z18PrePostDollarFixerCEskcpkcp(&PrePostDollarFixerTemp, "!!! ", " !!!");
-    _Z20DefaultTextFormatterCEskDefaultTextFormatter(&formatters[0], (const DefaultTextFormatter *)&PrePostDollarFixerTemp);
+    _Z20DefaultTextFormatterCEskDefaultTextFormatter(&formatters[0],
+                                                     (const DefaultTextFormatter *) &PrePostDollarFixerTemp);
     _Z18PrePostDollarFixerDEs(&PrePostDollarFixerTemp);
 
-    _Z20DefaultTextFormatterCEs((DefaultTextFormatter*)&MultiplierTemp);
+    _Z20DefaultTextFormatterCEs((DefaultTextFormatter *) &MultiplierTemp);
+    ((TextFormatter*)&MultiplierTemp)->PTvptr =MultiplierVPTR;
+
     MultiplierTemp._Z10Multiplier5timesVE = 4;
     printf("--- Multiplier CTOR: times = %d\n", MultiplierTemp._Z10Multiplier5timesVE);
-    _Z20DefaultTextFormatterCEskDefaultTextFormatter(&formatters[1], (const DefaultTextFormatter *)&MultiplierTemp);
+    _Z20DefaultTextFormatterCEskDefaultTextFormatter(&formatters[1], (const DefaultTextFormatter *) &MultiplierTemp);
     _Z10Multiplier8VirtualDEs(&MultiplierTemp);
 
     _Z14PrePostCheckerCEs(&PrePostCheckerTemp);
-    _Z20DefaultTextFormatterCEskDefaultTextFormatter(&formatters[2], (const DefaultTextFormatter *)&PrePostCheckerTemp);
+    _Z20DefaultTextFormatterCEskDefaultTextFormatter(&formatters[2],
+                                                     (const DefaultTextFormatter *) &PrePostCheckerTemp);
     _Z14PrePostCheckerDEs(&PrePostCheckerTemp);
 
-    for (i = 0; i < 3; ++i)
+    for (i = 0; i < 3; ++i) {
         _Z20DefaultTextFormatter12VirtualPrintEkc(&formatters[i], "Hello World!");
+    }
 
     printf("\n--- end doFormatterArray() ---\n\n");
+
+    for (i = 2; i >= 0; --i) {
+        ((pDCtor) ((((TextFormatter *) (&formatters[i]))->PTvptr)[Dtor]))(&formatters[i]);
+    }
 }
 
-/*
 
-void doFormatterPtrs()
-    {
-        printf("\n--- start doFormatterPtrs() ---\n\n");
+void doFormatterPtrs(){
+    int i;
+    DefaultTextFormatter* pfmt[3];
+    printf("\n--- start doFormatterPtrs() ---\n\n");
 
-        DefaultTextFormatter* pfmt[] =
-                {
-                        new PrePostDollarFixer("!!! ", " !!!"),
-                new Multiplier(4),
-                new PrePostChecker()
+    pfmt[0] = (DefaultTextFormatter*)malloc(sizeof(PrePostDollarFixer));
+    pfmt[1] = (DefaultTextFormatter*)malloc(sizeof(Multiplier));
+    pfmt[2] = (DefaultTextFormatter*)malloc(sizeof(PrePostChecker));
 
-                for (int i = 0; i < 3; ++i)
-        pfmt[i]->print("Hello World!");
+    _Z18PrePostDollarFixerCEskcpkcp((PrePostDollarFixer*)pfmt[0], "!!! ", " !!!");
+    _Z20DefaultTextFormatterCEs((DefaultTextFormatter*)pfmt[1]);
+    ((TextFormatter*)((pfmt[1])))->PTvptr = MultiplierVPTR;
+    ((Multiplier*)(pfmt[1]))->_Z10Multiplier5timesVE = 4;
+    printf("--- Multiplier CTOR: times = %d\n", ((Multiplier*)(pfmt[1]))->_Z10Multiplier5timesVE);
 
-    for (int i = 2; i >= 0; --i)
-        delete pfmt[i];
+    _Z14PrePostCheckerCEs((PrePostChecker*)pfmt[2]);
 
+    for(i=0; i<3 ; i++){
+        ((PrintChar) ((((TextFormatter *) (pfmt[i]))->PTvptr)[printEpkc]))((pfmt[i]), "Hello World!");
+    }
+
+    for (i = 2; i >= 0; --i) {
+        ((pDCtor) ((((TextFormatter *) (pfmt[i]))->PTvptr)[Dtor]))(pfmt[i]);
+        free(pfmt[i]);
+    }
     printf("\n--- end doFormatterPtrs() ---\n\n");
 }
 
 
+
 void doFormatterDynamicArray()
 {
+    int i;
+    DefaultTextFormatter* formatters;
     printf("\n--- start doFormatterDynamicArray() ---\n\n");
 
-    DefaultTextFormatter* formatters = generateFormatterArray();
+    formatters = generateFormatterArray();
 
-    for (int i = 0; i < 3; ++i)
-        formatters[i].print("Hello World!");
+    for (i = 0; i < 3; ++i)
+        _Z20DefaultTextFormatter12VirtualPrintEkc(&formatters[i], "Hello World!");
 
-    delete[] formatters;
+    for (i = 2; i >= 0; --i) {
+        _Z20DefaultTextFormatter8VirtualDEs(&formatters[i]);
+    }
 
-    printf("\n--- start doFormatterDynamicArray() ---\n\n");
+    printf("\n--- end doFormatterDynamicArray() ---\n\n");
+
+
 }
 
-*/
+
 int main() {
     printf("\n--- Start main() ---\n\n");
 
@@ -229,11 +252,12 @@ int main() {
     runAsPrePostHashFixerRef(&hfix);
     doMultiplier();
     doFormatterArray();
-    /*doFormatterPtrs();
-    doFormatterDynamicArray();*/
+    doFormatterPtrs();
+    doFormatterDynamicArray();
 
     printf("\n--- End main() ---\n\n");
 
+    _Z16PrePostHashFixer8VirtualDEs(&hfix);
     return 0;
 }
 
