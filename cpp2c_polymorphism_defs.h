@@ -1,5 +1,3 @@
-#ifndef UNTITLED_CPP2C_POLYMORPHISM_DEFS_H
-#define UNTITLED_CPP2C_POLYMORPHISM_DEFS_H
 #include <stdio.h>
 
 typedef void*(*TYPE)(void*);
@@ -154,6 +152,3 @@ typedef struct {
 
 void _Z10Multiplier8VirtualDEs(void * this);
 void _Z10Multiplier5printEs(const void* this, const char*);
-
-
-#endif //UNTITLED_CPP2C_POLYMORPHISM_DEFS_H
