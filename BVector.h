@@ -1,12 +1,9 @@
-//
-// Created by y on 6/23/20.
-//
-
 #ifndef VECTOR_VECTOR_H
 #define VECTOR_VECTOR_H
 
 #include <cstdio>
 #include <iostream>
+
 
 template<typename T>
 class Vector{
@@ -14,7 +11,7 @@ public:
     explicit Vector ();
     explicit Vector (size_t n, const T& val =T());
     template <class InputIterator>
-    Vector(InputIterator first, InputIterator last);
+    Vector(T* first, T* last);
     Vector(const Vector& other);
     Vector& operator=(const Vector& other);
     const T& operator[](size_t index)const {return m_vector[index];}
@@ -27,10 +24,10 @@ public:
     T& back(){return m_vector[m_size-1];}
     const T* data() const {return m_vector;}
     T* data() { return m_vector; }
-
     template <class InputIterator>
     void assign (InputIterator first, InputIterator last);
     void assign (size_t n, const T& val);
+    void vectorToPrint(std::ostream & out);
 
     ~Vector();
 
@@ -45,6 +42,7 @@ public:
     void clear();
     void swap (Vector& other);
 
+   /* friend std::ostream& operator << (std::ostream&, Vector<T>&);*/
 
 private:
     void initVector(Vector<T> vector);
@@ -53,6 +51,7 @@ private:
     size_t m_size;
     T* m_vector;
 };
+
 
 template<typename T>
 void Vector<T>::initVector(Vector<T> vector) {
@@ -63,6 +62,7 @@ void Vector<T>::initVector(Vector<T> vector) {
         m_vector[i] = vector[i];
     }
 }
+
 
 template<typename T>
 Vector<T>::Vector(): m_capacity(0), m_size(0), m_vector(NULL) {}
@@ -77,7 +77,7 @@ Vector<T>::Vector(size_t n, const T& val):m_capacity(n), m_size(n), m_vector(new
 
 template<typename T>
 template <class InputIterator>
-Vector<T>::Vector(InputIterator first, InputIterator last):m_capacity(){
+Vector<T>::Vector(T* first, T* last):m_capacity(){
     if(last<first){
         throw "index of begin bigger index of end";
     }
@@ -95,14 +95,21 @@ Vector<T>::Vector(InputIterator first, InputIterator last):m_capacity(){
 
 template<typename T>
 Vector<T>::Vector(const Vector &other){
-    initVector(other);
+    /*initVector(other);*/
+    m_vector = new T[other.m_capacity];
+    m_capacity = other.m_capacity;
+    m_size = other.m_size;
+    for(size_t i=0; i< m_size; i++){
+        m_vector[i] = other[i];
+    }
 }
+
 
 template<typename T>
 Vector<T>& Vector<T>::operator=(const Vector &other) {
-    if(this == other){
+   /* if(this == &other){
         return *this;
-    }
+    }*/
     delete [] m_vector;
     m_vector =NULL;
     initVector(other);
@@ -110,11 +117,13 @@ Vector<T>& Vector<T>::operator=(const Vector &other) {
 }
 
 
+
 template<typename T>
 Vector<T>::~Vector() {
     delete [] m_vector;
     m_vector = NULL;
 }
+
 
 template<typename T>
 void Vector<T>::resize(size_t n, const T &val) {
@@ -140,6 +149,7 @@ void Vector<T>::resize(size_t n, const T &val) {
     m_size = n;
 }
 
+
 template<typename T>
 void Vector<T>::reserve(size_t n) {
     if(n > m_capacity){
@@ -153,17 +163,20 @@ void Vector<T>::reserve(size_t n) {
     }
 }
 
+
 template<typename T>
 const T &Vector<T>::at(size_t index) const {
     isValid(index);
     return m_vector[index];
 }
 
+
 template<typename T>
 T &Vector<T>::at(size_t index) {
     isValid(index);
     return m_vector[index];
 }
+
 
 template<typename T>
 void Vector<T>::isValid(size_t n) {
@@ -192,7 +205,6 @@ void Vector<T>::assign(InputIterator first, InputIterator last) {
         it++;
     }
 }
-
 
 
 template<typename T>
@@ -233,9 +245,30 @@ void Vector<T>::clear() {
 
 template<class T>
 void Vector<T>::swap(Vector &other) {
-    Vector<T> temp(this);
-    this = other;
+    Vector<T> temp(*this);
+    *this = other;
     other = temp;
 }
 
+
+template<class T>
+std::ostream& operator<<(std::ostream & out, Vector<T> & v) {
+    out<<"***vector***";
+    v.vectorToPrint(out);
+    out<<"*********\n";
+    return out;
+}
+
+template<class T>
+void Vector<T>::vectorToPrint(std::ostream & out) {
+    out <<"\nsize: "<< m_size <<"\ncapacity: "<<m_capacity<<"\nvector: ";
+
+    if(m_size == 0){
+        out<<"Vector without parameters:(";
+    }
+    for (size_t i=0; i<m_size; i++){
+        out<<m_vector[i]<<" ";
+    }
+    out<<"\n";
+}
 #endif //VECTOR_VECTOR_H
